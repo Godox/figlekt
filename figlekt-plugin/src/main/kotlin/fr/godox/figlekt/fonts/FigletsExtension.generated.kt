@@ -9,13 +9,13 @@ package fr.godox.figlekt.fonts
 public class FigletsExtension : FigletsBase() {
 
     /** The `3-d.flf` FIGlet font. */
-    public val _3D: FigletSelector = select("3-d.flf")
+    public val `3D`: FigletSelector = select("3-d.flf")
 
     /** The `3x5.flf` FIGlet font. */
-    public val _3x5: FigletSelector = select("3x5.flf")
+    public val `3x5`: FigletSelector = select("3x5.flf")
 
     /** The `5lineoblique.flf` FIGlet font. */
-    public val _5lineoblique: FigletSelector = select("5lineoblique.flf")
+    public val `5lineoblique`: FigletSelector = select("5lineoblique.flf")
 
     /** The `acrobatic.flf` FIGlet font. */
     public val acrobatic: FigletSelector = select("acrobatic.flf")

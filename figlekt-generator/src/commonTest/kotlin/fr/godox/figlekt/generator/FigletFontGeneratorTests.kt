@@ -11,7 +11,7 @@ class FigletFontGeneratorTests {
         assertEquals("Standard", FigletFontGenerator.fontName("Standard.flf"))
         assertEquals("standard", FigletFontGenerator.functionName("Standard.flf"))
         assertEquals("bigMoneyNe", FigletFontGenerator.functionName("Big_Money-ne.flf"))
-        assertEquals("_3x5", FigletFontGenerator.functionName("3x5.flf"))
+        assertEquals("`3x5`", FigletFontGenerator.functionName("3x5.flf"))
         assertEquals("banner3D", FigletFontGenerator.accessorName("banner3-D.flf"))
     }
 

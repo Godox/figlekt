@@ -20,11 +20,11 @@ Figlekt.figletify("Hello, World!", Font.standard)
 
 ## Inspiration
 
-This project is a rewrite of [banana](https://github.com/yihleego/banana), a FIGlet utility for
-Kotlin Multiplatform by [Leego Yih](https://github.com/yihleego), released under the MIT license.
-The FIGlet rendering algorithm — character smushing, the layout rules and the font file format — comes
-from that library, and from [FIGlet](https://www.figlet.org) itself, created by Glenn Chappell and
-Ian Chai. This repository keeps what worked, and changes what did not fit:
+This project is a rewrite of [banana](https://github.com/yihleego/banana), released under the MIT
+license by [Leego Yih](https://github.com/yihleego). banana started as a Java library and was later
+ported to Kotlin Multiplatform; the rendering algorithm — character smushing, the layout rules and
+the font file format — comes from it, and from [FIGlet](https://www.figlet.org) itself, created by
+Glenn Chappell and Ian Chai. This repository keeps what worked, and changes what did not fit:
 
 - a single font is enough, so `fonts` are versioned Kotlin sources instead of a multi-megabyte
   resource bundle;
@@ -39,7 +39,7 @@ Ian Chai. This repository keeps what worked, and changes what did not fit:
 | `figlekt-generator`| Turns a `.flf` file into Kotlin source, in `commonMain`.                 |
 | `figlekt-plugin`   | Gradle plugin `fr.godox.figlekt.fonts`, generating fonts at build time.  |
 | `figlekt-cli`      | Command line generator, running the same code as the web page.           |
-| `figlekt-webapp`   | Kotlin/Wasm web page to browse the font database and copy the class.     |
+| `figlekt-webapp`   | Kotlin/Wasm web page to browse the font database, preview it and copy the class. |
 
 ## Adding a font
 
@@ -80,7 +80,8 @@ public val Font.doom: FigletFont
 
 ## Web page
 
-Browse the font database and copy the generated class straight into your IDE:
+Browse the font database, preview the selected font on a text of your own, and copy the generated
+class straight into your IDE:
 
 ```
 ./gradlew :figlekt-webapp:wasmJsBrowserDevelopmentRun

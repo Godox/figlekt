@@ -54,8 +54,9 @@ object FigletFontGenerator {
      * for example `banner3-D.flf` becomes `banner3D`.
      */
     fun accessorName(filename: String): String {
-        val name = functionName(filename)
-        return if (name in RESERVED) name + "Font" else name
+        val name = functionName(filename).trim('`')
+        val safe = if (name in RESERVED) name + "Font" else name
+        return if (safe[0].isDigit()) "`$safe`" else safe
     }
 
     /**
@@ -102,7 +103,7 @@ object FigletFontGenerator {
      */
     fun fontSource(filename: String, content: ByteArray, basePackage: String = BASE_PACKAGE): String {
         val name = functionName(filename)
-        val field = "_" + name.trimStart('_')
+        val field = "_" + name.trim('`', '_')
         val builder = StringBuilder()
         builder.append("private var ").append(field).append(": FigletFont? = null\n\n")
         builder.append("/** The FIGlet font `").append(filename).append("`. */\n")
@@ -213,20 +214,18 @@ object FigletFontGenerator {
         }
     }
 
+    /**
+     * Returns the identifier of the given value, in camel case and quoted with backticks when it
+     * starts with a digit, for example `3x5.flf` becomes `` `3x5` ``.
+     */
     private fun camelCase(value: String): String {
-        val builder = StringBuilder()
-        for ((index, word) in words(value).withIndex()) {
-            if (index == 0) {
-                builder.append(word.lowercase())
-            } else {
-                builder.append(word.replaceFirstChar { it.uppercaseChar() })
+        val name = buildString {
+            for ((index, word) in words(value).withIndex()) {
+                append(if (index == 0) word.lowercase() else word.replaceFirstChar { it.uppercaseChar() })
             }
         }
-        val text = builder.toString()
-        if (text.isEmpty()) {
-            return "font"
-        }
-        return if (text[0].isDigit()) "_$text" else text
+        val text = name.ifEmpty { "font" }
+        return if (text[0].isDigit()) "`$text`" else text
     }
 
     private fun words(value: String): List<String> = value.split(Regex("[^A-Za-z0-9]+"))
