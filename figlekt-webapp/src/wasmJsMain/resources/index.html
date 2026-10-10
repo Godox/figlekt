@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>figlekt &middot; FIGlet font generator</title>
     <style>
         :root {
@@ -19,9 +19,19 @@
             box-sizing: border-box;
         }
 
+        * {
+            min-width: 0;
+        }
+
+        html, body {
+            overflow-x: hidden;
+        }
+
         body {
             margin: 0;
             padding: 1.5rem 1.25rem 2.5rem;
+            padding-left: max(1.25rem, env(safe-area-inset-left));
+            padding-right: max(1.25rem, env(safe-area-inset-right));
             background: var(--bg);
             color: var(--text);
             font: 15px/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -41,6 +51,7 @@
             margin: 0;
             color: var(--muted);
             font-size: .92rem;
+            overflow-wrap: break-word;
         }
 
         main {
@@ -49,12 +60,6 @@
             gap: 1.25rem;
             max-width: 1200px;
             margin: 0 auto;
-        }
-
-        @media (max-width: 860px) {
-            main {
-                grid-template-columns: minmax(0, 1fr);
-            }
         }
 
         .panel {
@@ -70,6 +75,7 @@
             justify-content: space-between;
             gap: .5rem;
             margin-bottom: .6rem;
+            min-width: 0;
         }
 
         .panel-head h2 {
@@ -82,6 +88,7 @@
         }
 
         #count {
+            flex-shrink: 0;
             color: var(--muted);
             font-size: .75rem;
         }
@@ -94,6 +101,31 @@
             background: var(--bg);
             color: var(--text);
             font-size: .88rem;
+        }
+
+        /* 16px keeps iOS Safari from zooming in on focus. */
+        #search,
+        #select,
+        #package {
+            font-size: 16px;
+        }
+
+        #select {
+            display: none;
+        }
+
+        #drop {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: .3rem;
+            min-height: 92px;
+            border: 2px dashed var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: border-color .15s ease, background .15s ease;
+            touch-action: manipulation;
         }
 
         #fonts {
@@ -120,19 +152,6 @@
             color: var(--accent);
         }
 
-        #drop {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: .3rem;
-            min-height: 92px;
-            border: 2px dashed var(--border);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: border-color .15s ease, background .15s ease;
-        }
-
         #drop:hover, #drop.over {
             border-color: var(--accent);
             background: #20242c;
@@ -148,9 +167,11 @@
             align-items: center;
             gap: .6rem;
             margin: .7rem 0;
+            min-width: 0;
         }
 
         label {
+            flex-shrink: 0;
             color: var(--muted);
             font-size: .75rem;
             text-transform: uppercase;
@@ -204,12 +225,125 @@
             font-size: .82rem;
         }
 
+        .preview-box {
+            margin-bottom: .9rem;
+            padding: .8rem .9rem;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--panel);
+        }
+
+        .preview-head {
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+            min-width: 0;
+        }
+
+        #preview {
+            margin: .7rem 0 0;
+            color: var(--accent);
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: .62rem;
+            line-height: 1.05;
+            white-space: pre;
+            overflow-x: auto;
+            min-height: 1.2rem;
+        }
+
+        #preview:empty {
+            display: none;
+        }
+
         code {
             padding: .1rem .3rem;
             border-radius: 5px;
             background: var(--bg);
             font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
             font-size: .85em;
+        }
+
+        @media (max-width: 860px) {
+            main {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            body {
+                padding: 1rem .85rem 2.5rem;
+            }
+
+            /* The list of 148 fonts is unusable on a phone, the dropdown takes over. */
+            #fonts {
+                display: none;
+            }
+
+            #select {
+                display: block;
+                width: 100%;
+                margin-top: .7rem;
+                padding: .7rem .6rem;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                background: var(--bg);
+                color: var(--text);
+                font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+                font-size: .88rem;
+                min-height: 44px;
+            }
+
+            /* Touch targets, the recommendation is 44px. */
+            button,
+            #drop,
+            #copy {
+                min-height: 44px;
+            }
+
+            #drop {
+                min-height: 76px;
+            }
+
+            textarea {
+                height: 46vh;
+                font-size: .72rem;
+            }
+
+            .panel {
+                padding: .75rem;
+            }
+
+            /* Le libellé et le bouton sur une ligne, le champ sur la suivante. */
+            .row {
+                flex-wrap: wrap;
+            }
+
+            #package {
+                order: 3;
+                flex: 1 0 100%;
+            }
+
+            #copy {
+                margin-left: auto;
+            }
+
+            .preview-box {
+                padding: .7rem .75rem;
+            }
+
+            #preview {
+                font-size: .55rem;
+            }
+
+            header {
+                margin-bottom: 1rem;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            p.lead {
+                font-size: .84rem;
+            }
         }
     </style>
 </head>
@@ -225,9 +359,17 @@
             <span id="count"></span>
         </div>
         <input type="text" id="search" placeholder="Search by name or author" autocomplete="off">
+        <select id="select" aria-label="Font"></select>
         <ul id="fonts"></ul>
     </aside>
     <section>
+        <div class="preview-box">
+            <div class="preview-head">
+                <label for="preview-text">Preview</label>
+                <input type="text" id="preview-text" value="Figlekt" autocomplete="off" spellcheck="false">
+            </div>
+            <pre id="preview">Pick a font to see it.</pre>
+        </div>
         <div id="drop">
             <strong>Drop a <code>.flf</code> file here</strong>
             <span>or click to browse</span>

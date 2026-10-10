@@ -19,6 +19,7 @@ kotlin {
         named("wasmJsMain") {
             dependencies {
                 implementation(project(":figlekt-generator"))
+                implementation(project(":figlekt-core"))
                 implementation("org.jetbrains.kotlinx:kotlinx-browser:0.5.0")
             }
         }
