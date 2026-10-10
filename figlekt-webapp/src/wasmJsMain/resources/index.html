@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>figlekt &middot; FIGlet font generator</title>
+    <style>
+        :root {
+            color-scheme: dark;
+            --bg: #14161a;
+            --panel: #1c1f26;
+            --border: #2c313b;
+            --text: #e6e9ef;
+            --muted: #8b93a1;
+            --accent: #f0b429;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 1.5rem 1.25rem 2.5rem;
+            background: var(--bg);
+            color: var(--text);
+            font: 15px/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        }
+
+        header {
+            max-width: 1200px;
+            margin: 0 auto 1.25rem;
+        }
+
+        h1 {
+            margin: 0 0 .2rem;
+            font-size: 1.4rem;
+        }
+
+        p.lead {
+            margin: 0;
+            color: var(--muted);
+            font-size: .92rem;
+        }
+
+        main {
+            display: grid;
+            grid-template-columns: 300px minmax(0, 1fr);
+            gap: 1.25rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 860px) {
+            main {
+                grid-template-columns: minmax(0, 1fr);
+            }
+        }
+
+        .panel {
+            padding: .9rem;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--panel);
+        }
+
+        .panel-head {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: .5rem;
+            margin-bottom: .6rem;
+        }
+
+        .panel-head h2 {
+            margin: 0;
+            font-size: .8rem;
+            font-weight: 600;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        #count {
+            color: var(--muted);
+            font-size: .75rem;
+        }
+
+        #search {
+            width: 100%;
+            padding: .5rem .6rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg);
+            color: var(--text);
+            font-size: .88rem;
+        }
+
+        #fonts {
+            max-height: 70vh;
+            margin: .7rem 0 0;
+            padding: 0;
+            overflow-y: auto;
+            list-style: none;
+        }
+
+        #fonts li {
+            padding: .35rem .5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: .82rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        #fonts li:hover {
+            background: #262b34;
+            color: var(--accent);
+        }
+
+        #drop {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: .3rem;
+            min-height: 92px;
+            border: 2px dashed var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: border-color .15s ease, background .15s ease;
+        }
+
+        #drop:hover, #drop.over {
+            border-color: var(--accent);
+            background: #20242c;
+        }
+
+        #drop span {
+            color: var(--muted);
+            font-size: .8rem;
+        }
+
+        .row {
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+            margin: .7rem 0;
+        }
+
+        label {
+            color: var(--muted);
+            font-size: .75rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+        }
+
+        input[type=text] {
+            flex: 1;
+            padding: .45rem .6rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg);
+            color: var(--text);
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: .82rem;
+        }
+
+        textarea {
+            width: 100%;
+            height: 56vh;
+            padding: .8rem .9rem;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--bg);
+            color: var(--text);
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: .76rem;
+            line-height: 1.45;
+            resize: vertical;
+        }
+
+        button {
+            padding: .45rem 1rem;
+            border: 0;
+            border-radius: 8px;
+            background: var(--accent);
+            color: #14161a;
+            font-weight: 600;
+            font-size: .85rem;
+            cursor: pointer;
+        }
+
+        button:hover {
+            filter: brightness(1.08);
+        }
+
+        #status {
+            min-height: 1.2rem;
+            margin-top: .5rem;
+            color: var(--muted);
+            font-size: .82rem;
+        }
+
+        code {
+            padding: .1rem .3rem;
+            border-radius: 5px;
+            background: var(--bg);
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: .85em;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>figlekt</h1>
+    <p class="lead">Pick a FIGlet font in the database, or drop a <code>.flf</code> file, and get the Kotlin class embedding it.</p>
+</header>
+<main>
+    <aside class="panel">
+        <div class="panel-head">
+            <h2>Font database</h2>
+            <span id="count"></span>
+        </div>
+        <input type="text" id="search" placeholder="Search by name or author" autocomplete="off">
+        <ul id="fonts"></ul>
+    </aside>
+    <section>
+        <div id="drop">
+            <strong>Drop a <code>.flf</code> file here</strong>
+            <span>or click to browse</span>
+        </div>
+        <input type="file" id="file" accept=".flf" hidden>
+        <div class="row">
+            <label for="package">Package</label>
+            <input type="text" id="package" placeholder="com.example.fonts (optional)">
+            <button id="copy" type="button">Copy</button>
+        </div>
+        <textarea id="output" readonly placeholder="// The generated class appears here"></textarea>
+        <div id="status"></div>
+    </section>
+</main>
+<script src="figlekt.js"></script>
+</body>
+</html>
