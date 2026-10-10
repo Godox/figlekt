@@ -1,0 +1,25 @@
+# Gradle
+.gradle/
+build/
+buildSrc/build/
+
+# Kotlin
+.kotlin/
+*.log
+
+# Kotlin/JS and Kotlin/Wasm
+node_modules/
+.kotlin-js-store/
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+.vscode/
+*.hprof
+
+# OS
+.DS_Store
+Thumbs.db
